@@ -19,46 +19,89 @@ const fromSupabase = async (query) => {
 
 /* supabase integration types
 
-// EXAMPLE TYPES SECTION
-// DO NOT USE TYPESCRIPT
-
-Foo // table: foos
+Products // table: products
     id: number
-    title: string
+    name: string
+    description: string
+    price: number
+    image_url: string
 
-Bar // table: bars
+ShoppingCart // table: shopping_cart
     id: number
-    foo_id: number // foreign key to Foo
-	
+    user_id: string
+    product_id: number
+    quantity: number
+
 */
 
-// Example hook for models
+// Hooks for Products table
+export const useProducts = () => useQuery({
+    queryKey: ['products'],
+    queryFn: () => fromSupabase(supabase.from('products').select('*')),
+});
 
-export const useFoo = ()=> useQuery({
-    queryKey: ['foo'],
-    queryFn: fromSupabase(supabase.from('foo')),
-})
-export const useAddFoo = () => {
+export const useAddProduct = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newFoo)=> fromSupabase(supabase.from('foo').insert([{ title: newFoo.title }])),
-        onSuccess: ()=> {
-            queryClient.invalidateQueries('foo');
+        mutationFn: (newProduct) => fromSupabase(supabase.from('products').insert([newProduct])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('products');
         },
     });
 };
 
-export const useBar = ()=> useQuery({
-    queryKey: ['bar'],
-    queryFn: fromSupabase(supabase.from('bar')),
-})
-export const useAddBar = () => {
+export const useUpdateProduct = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (newBar)=> fromSupabase(supabase.from('bar').insert([{ foo_id: newBar.foo_id }])),
-        onSuccess: ()=> {
-            queryClient.invalidateQueries('bar');
+        mutationFn: (updatedProduct) => fromSupabase(supabase.from('products').update(updatedProduct).eq('id', updatedProduct.id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('products');
         },
     });
 };
 
+export const useDeleteProduct = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (productId) => fromSupabase(supabase.from('products').delete().eq('id', productId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('products');
+        },
+    });
+};
+
+// Hooks for ShoppingCart table
+export const useShoppingCart = () => useQuery({
+    queryKey: ['shopping_cart'],
+    queryFn: () => fromSupabase(supabase.from('shopping_cart').select('*')),
+});
+
+export const useAddToCart = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newCartItem) => fromSupabase(supabase.from('shopping_cart').insert([newCartItem])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('shopping_cart');
+        },
+    });
+};
+
+export const useUpdateCartItem = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (updatedCartItem) => fromSupabase(supabase.from('shopping_cart').update(updatedCartItem).eq('id', updatedCartItem.id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('shopping_cart');
+        },
+    });
+};
+
+export const useRemoveFromCart = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (cartItemId) => fromSupabase(supabase.from('shopping_cart').delete().eq('id', cartItemId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('shopping_cart');
+        },
+    });
+};

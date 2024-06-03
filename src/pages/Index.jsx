@@ -1,27 +1,12 @@
 import { Container, Text, VStack, Box, Heading, SimpleGrid } from "@chakra-ui/react";
+import { useProducts } from "../integrations/supabase/index.js";
 import ProductCard from "../components/ProductCard";
 
 const Index = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Stylish Jacket",
-      description: "Stay warm and stylish with our latest collection of jackets.",
-      image: "/images/clothing1.jpg"
-    },
-    {
-      id: 2,
-      name: "Casual T-Shirt",
-      description: "Perfect for everyday wear, our casual t-shirts come in various colors.",
-      image: "/images/clothing2.jpg"
-    },
-    {
-      id: 3,
-      name: "Elegant Dress",
-      description: "Turn heads with our elegant and stylish dresses for any occasion.",
-      image: "/images/clothing3.jpg"
-    }
-  ];
+  const { data: products, isLoading, error } = useProducts();
+
+  if (isLoading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error loading products</Text>;
 
   return (
     <Container maxW="container.xl" p={4}>
