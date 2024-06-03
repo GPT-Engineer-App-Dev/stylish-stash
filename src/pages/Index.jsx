@@ -1,7 +1,28 @@
-import { Container, Text, VStack, Box, Image, Button, Heading, SimpleGrid } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Container, Text, VStack, Box, Heading, SimpleGrid } from "@chakra-ui/react";
+import ProductCard from "../components/ProductCard";
 
 const Index = () => {
+  const products = [
+    {
+      id: 1,
+      name: "Stylish Jacket",
+      description: "Stay warm and stylish with our latest collection of jackets.",
+      image: "/images/clothing1.jpg"
+    },
+    {
+      id: 2,
+      name: "Casual T-Shirt",
+      description: "Perfect for everyday wear, our casual t-shirts come in various colors.",
+      image: "/images/clothing2.jpg"
+    },
+    {
+      id: 3,
+      name: "Elegant Dress",
+      description: "Turn heads with our elegant and stylish dresses for any occasion.",
+      image: "/images/clothing3.jpg"
+    }
+  ];
+
   return (
     <Container maxW="container.xl" p={4}>
       <VStack spacing={8} align="stretch">
@@ -11,32 +32,9 @@ const Index = () => {
         </Box>
 
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-          <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Image src="/images/clothing1.jpg" alt="Clothing Item 1" />
-            <Box p={6}>
-              <Heading as="h3" size="lg" mb={2}>Stylish Jacket</Heading>
-              <Text mb={4}>Stay warm and stylish with our latest collection of jackets.</Text>
-              <Button as={Link} to="/product/1" colorScheme="teal" size="md">View Details</Button>
-            </Box>
-          </Box>
-
-          <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Image src="/images/clothing2.jpg" alt="Clothing Item 2" />
-            <Box p={6}>
-              <Heading as="h3" size="lg" mb={2}>Casual T-Shirt</Heading>
-              <Text mb={4}>Perfect for everyday wear, our casual t-shirts come in various colors.</Text>
-              <Button as={Link} to="/product/2" colorScheme="teal" size="md">View Details</Button>
-            </Box>
-          </Box>
-
-          <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Image src="/images/clothing3.jpg" alt="Clothing Item 3" />
-            <Box p={6}>
-              <Heading as="h3" size="lg" mb={2}>Elegant Dress</Heading>
-              <Text mb={4}>Turn heads with our elegant and stylish dresses for any occasion.</Text>
-              <Button as={Link} to="/product/3" colorScheme="teal" size="md">View Details</Button>
-            </Box>
-          </Box>
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </SimpleGrid>
       </VStack>
     </Container>
