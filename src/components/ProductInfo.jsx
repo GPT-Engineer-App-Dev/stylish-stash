@@ -1,19 +1,21 @@
 import { Box, Image, Text, Heading, VStack, Button, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAddToCart, useRemoveFromCart, useShoppingCart } from "../integrations/supabase/index.js";
+import { useUser } from '@supabase/supabase-js';
 
 const ProductInfo = ({ product }) => {
   const toast = useToast();
   const { data: cartItems } = useShoppingCart();
   const addToCartMutation = useAddToCart();
   const removeFromCartMutation = useRemoveFromCart();
+  const { user } = useUser();
 
   const addToCart = () => {
-    const userId = "user-id-placeholder"; // Replace with actual user ID logic if available
+    const userId = user?.id;
     if (!userId) {
       toast({
         title: "Error",
-        description: "User ID is missing.",
+        description: "You must be logged in to add items to the cart.",
         status: "error",
         duration: 3000,
         isClosable: true,
