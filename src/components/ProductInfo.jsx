@@ -1,16 +1,21 @@
 import { Box, Image, Text, Heading, VStack, Button, useToast } from "@chakra-ui/react";
 import { useState } from "react";
+import { supabase } from '../integrations/supabase/index.js';
 import { useAddToCart, useRemoveFromCart, useShoppingCart } from "../integrations/supabase/index.js";
-import { useUser } from '@supabase/supabase-js';
+const getUser = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
+};
 
 const ProductInfo = ({ product }) => {
   const toast = useToast();
   const { data: cartItems } = useShoppingCart();
   const addToCartMutation = useAddToCart();
   const removeFromCartMutation = useRemoveFromCart();
-  const { user } = useUser();
+  
 
-  const addToCart = () => {
+  const addToCart = async () => {
+    const user = await getUser();
     const userId = user?.id;
     if (!userId) {
       toast({
