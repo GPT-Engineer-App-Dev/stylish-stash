@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React, { useContext, useState, useEffect } from "react";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_PROJECT_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-import React from "react";
 export const queryClient = new QueryClient();
 export function SupabaseProvider({ children }) {
     return React.createElement(QueryClientProvider, { client: queryClient }, children);
@@ -103,6 +103,59 @@ export const useRemoveFromCart = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('shopping_cart');
         },
+    });
+};
+
+// Authentication Context and Hooks
+const AuthContext = React.createContext();
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const session = supabase.auth.session();
+        setUser(session?.user ?? null);
+
+        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => {
+            authListener?.unsubscribe();
+        };
+    }, []);
+
+    return (
+        React.createElement(AuthContext.Provider, { value: { user, setUser } }, children)
+    );
+};
+
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
+
+export const useSignUp = () => {
+    return useMutation(async ({ email, password }) => {
+        const { user, error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        return user;
+    });
+};
+
+export const useSignIn = () => {
+    return useMutation(async ({ email, password }) => {
+        const { user, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        return user;
+    });
+};
+
+export const useSignOut = () => {
+    const queryClient = useQueryClient();
+    return useMutation(async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        queryClient.clear();
     });
 };
 
