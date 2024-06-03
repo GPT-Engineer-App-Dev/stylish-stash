@@ -1,5 +1,5 @@
 import { Container, Text, VStack, Box, Heading, SimpleGrid, Button } from "@chakra-ui/react";
-import { useShoppingCart, useRemoveFromCart } from "../integrations/supabase/index.js";
+import { useShoppingCart, useRemoveFromCart, supabase } from "../integrations/supabase/index.js";
 import { useEffect, useState } from "react";
 
 const ShoppingCart = () => {
