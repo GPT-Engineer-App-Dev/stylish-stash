@@ -70,32 +70,6 @@ export const useDeleteProduct = () => {
     });
 };
 
-// Hooks for ShoppingCart table
-export const useShoppingCart = () => useQuery({
-    queryKey: ['shopping_cart'],
-    queryFn: () => fromSupabase(supabase.from('shopping_cart').select('*')),
-});
-
-export const useAddToCart = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (newCartItem) => fromSupabase(supabase.from('shopping_cart').insert([newCartItem])),
-        onSuccess: () => {
-            queryClient.invalidateQueries('shopping_cart');
-        },
-    });
-};
-
-export const useUpdateCartItem = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (updatedCartItem) => fromSupabase(supabase.from('shopping_cart').update(updatedCartItem).eq('id', updatedCartItem.id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('shopping_cart');
-        },
-    });
-};
-
 export const useRemoveFromCart = () => {
     const queryClient = useQueryClient();
     return useMutation({
@@ -103,6 +77,61 @@ export const useRemoveFromCart = () => {
         onSuccess: () => {
             queryClient.invalidateQueries('shopping_cart');
         },
+    });
+};
+
+// Authentication Context and Hooks
+const AuthContext = React.createContext();
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const session = supabase.auth.session();
+        setUser(session?.user ?? null);
+
+        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
+        return () => {
+            authListener?.unsubscribe();
+        };
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{ user, setUser }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export const useAuth = () => {
+    return useContext(AuthContext);
+};
+
+export const useSignUp = () => {
+    return useMutation(async ({ email, password }) => {
+        const { user, error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        return user;
+    });
+};
+
+export const useSignIn = () => {
+    return useMutation(async ({ email, password }) => {
+        const { user, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        return user;
+    });
+};
+
+export const useSignOut = () => {
+    const queryClient = useQueryClient();
+    return useMutation(async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        queryClient.clear();
     });
 };
 
