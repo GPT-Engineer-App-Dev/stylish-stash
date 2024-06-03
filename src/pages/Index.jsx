@@ -1,17 +1,42 @@
-// Update this page (the content is just a fallback if you fail and example)
-// Use chakra-ui
-import { Container, Text, VStack } from "@chakra-ui/react";
-
-// Example of using react-icons
-// import { FaRocket } from "react-icons/fa";
-// <IconButton aria-label="Add" icon={<FaRocket />} size="lg" />; // IconButton would also have to be imported from chakra
+import { Container, Text, VStack, Box, Image, Button, Heading, SimpleGrid } from "@chakra-ui/react";
 
 const Index = () => {
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-      <VStack spacing={4}>
-        <Text fontSize="2xl">Your Blank Canvas</Text>
-        <Text>Chat with the agent to start making edits.</Text>
+    <Container maxW="container.xl" p={4}>
+      <VStack spacing={8} align="stretch">
+        <Box bg="gray.100" p={10} borderRadius="md" textAlign="center">
+          <Heading as="h1" size="2xl" mb={4}>Welcome to Our Online Clothing Store</Heading>
+          <Text fontSize="xl">Discover the latest trends in fashion and shop your favorite outfits.</Text>
+        </Box>
+
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+          <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+            <Image src="/images/clothing1.jpg" alt="Clothing Item 1" />
+            <Box p={6}>
+              <Heading as="h3" size="lg" mb={2}>Stylish Jacket</Heading>
+              <Text mb={4}>Stay warm and stylish with our latest collection of jackets.</Text>
+              <Button colorScheme="teal" size="md">Shop Now</Button>
+            </Box>
+          </Box>
+
+          <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+            <Image src="/images/clothing2.jpg" alt="Clothing Item 2" />
+            <Box p={6}>
+              <Heading as="h3" size="lg" mb={2}>Casual T-Shirt</Heading>
+              <Text mb={4}>Perfect for everyday wear, our casual t-shirts come in various colors.</Text>
+              <Button colorScheme="teal" size="md">Shop Now</Button>
+            </Box>
+          </Box>
+
+          <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+            <Image src="/images/clothing3.jpg" alt="Clothing Item 3" />
+            <Box p={6}>
+              <Heading as="h3" size="lg" mb={2}>Elegant Dress</Heading>
+              <Text mb={4}>Turn heads with our elegant and stylish dresses for any occasion.</Text>
+              <Button colorScheme="teal" size="md">Shop Now</Button>
+            </Box>
+          </Box>
+        </SimpleGrid>
       </VStack>
     </Container>
   );
