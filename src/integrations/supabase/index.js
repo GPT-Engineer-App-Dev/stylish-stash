@@ -8,7 +8,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const queryClient = new QueryClient();
 export function SupabaseProvider({ children }) {
-    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+    return React.createElement(QueryClientProvider, { client: queryClient }, children);
 }
 
 const fromSupabase = async (query) => {
@@ -126,9 +126,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setUser }}>
-            {children}
-        </AuthContext.Provider>
+        React.createElement(AuthContext.Provider, { value: { user, setUser } }, children)
     );
 };
 
