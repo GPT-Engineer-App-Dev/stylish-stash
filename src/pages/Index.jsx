@@ -1,4 +1,4 @@
-import { Container, Text, VStack, Box, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Container, Text, VStack, Box, Heading, SimpleGrid, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useProducts } from "../integrations/supabase/index.js";
 import ProductCard from "../components/ProductCard";
