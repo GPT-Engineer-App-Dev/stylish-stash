@@ -105,3 +105,5 @@ export const useRemoveFromCart = () => {
         },
     });
 };
+
+export { supabase };
