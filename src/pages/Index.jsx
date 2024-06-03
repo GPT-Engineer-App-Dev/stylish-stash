@@ -1,4 +1,5 @@
 import { Container, Text, VStack, Box, Image, Button, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -15,7 +16,7 @@ const Index = () => {
             <Box p={6}>
               <Heading as="h3" size="lg" mb={2}>Stylish Jacket</Heading>
               <Text mb={4}>Stay warm and stylish with our latest collection of jackets.</Text>
-              <Button colorScheme="teal" size="md">Shop Now</Button>
+              <Button as={Link} to="/product/1" colorScheme="teal" size="md">View Details</Button>
             </Box>
           </Box>
 
@@ -24,7 +25,7 @@ const Index = () => {
             <Box p={6}>
               <Heading as="h3" size="lg" mb={2}>Casual T-Shirt</Heading>
               <Text mb={4}>Perfect for everyday wear, our casual t-shirts come in various colors.</Text>
-              <Button colorScheme="teal" size="md">Shop Now</Button>
+              <Button as={Link} to="/product/2" colorScheme="teal" size="md">View Details</Button>
             </Box>
           </Box>
 
@@ -33,7 +34,7 @@ const Index = () => {
             <Box p={6}>
               <Heading as="h3" size="lg" mb={2}>Elegant Dress</Heading>
               <Text mb={4}>Turn heads with our elegant and stylish dresses for any occasion.</Text>
-              <Button colorScheme="teal" size="md">Shop Now</Button>
+              <Button as={Link} to="/product/3" colorScheme="teal" size="md">View Details</Button>
             </Box>
           </Box>
         </SimpleGrid>
