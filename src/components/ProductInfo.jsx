@@ -9,17 +9,42 @@ const ProductInfo = ({ product }) => {
   const removeFromCartMutation = useRemoveFromCart();
 
   const addToCart = () => {
-    addToCartMutation.mutate({ user_id: "user-id-placeholder", product_id: product.id, quantity: 1 }, {
-      onSuccess: () => {
-        toast({
-          title: "Added to cart",
-          description: `${product.name} has been added to your cart.`,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
+    const userId = "user-id-placeholder"; // Replace with actual user ID logic if available
+    if (!userId) {
+      toast({
+        title: "Error",
+        description: "User ID is missing.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    addToCartMutation.mutate(
+      { user_id: userId, product_id: product.id, quantity: 1 },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Added to cart",
+            description: `${product.name} has been added to your cart.`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        },
+        onError: (error) => {
+          console.error("Error adding to cart:", error);
+          toast({
+            title: "Error",
+            description: "Failed to add item to cart.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
+        },
       }
-    });
+    );
   };
 
   const removeFromCart = () => {
