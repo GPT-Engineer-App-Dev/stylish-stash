@@ -113,10 +113,14 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const session = supabase.auth.session();
-        setUser(session?.user ?? null);
+        const fetchSession = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            setUser(session?.user ?? null);
+        };
 
-        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        fetchSession();
+
+        const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
             setUser(session?.user ?? null);
         });
 
